@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}TrekPlan – Your Adventure Starts Here{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="trek-navbar">
+    <div class="nav-inner">
+        <a href="{{ url_for('home') }}" class="nav-brand">
+            <span class="nav-brand-icon">🏔️</span>
+            <span>TrekPlan</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('about') }}"><i class="bi bi-info-circle-fill"></i> About</a></li>
+            <li><a href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+            <li><a href="{{ url_for('auth.register') }}" class="nav-btn"><i class="bi bi-person-plus-fill"></i> Register</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="bi bi-stars"></i> India's #1 Trek Management Platform
+        </div>
+        <h1 class="hero-title">
+            Conquer the Mountains.<br>
+            <span class="gradient-text">Plan Your Trek.</span>
+        </h1>
+        <p class="hero-subtitle">
+            From Kedarkantha to Valley of Flowers — discover, book, and manage 
+            trekking adventures with your team. Built for trekkers, guides, and administrators.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn-hero-primary">
+                <i class="bi bi-rocket-takeoff-fill"></i> Start Your Journey
+            </a>
+            <a href="{{ url_for('about') }}" class="btn-hero-secondary">
+                <i class="bi bi-arrow-right-circle"></i> Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Row -->
+<section class="stats-row">
+    <div class="stats-grid">
+        <div class="stat-block">
+            <span class="stat-block-icon">⛰️</span>
+            <div class="stat-block-value">50+</div>
+            <div class="stat-block-label">Trek Routes</div>
+        </div>
+        <div class="stat-block">
+            <span class="stat-block-icon">🧗</span>
+            <div class="stat-block-value">200+</div>
+            <div class="stat-block-label">Happy Trekkers</div>
+        </div>
+        <div class="stat-block">
+            <span class="stat-block-icon">🏕️</span>
+            <div class="stat-block-value">15+</div>
+            <div class="stat-block-label">Expert Guides</div>
+        </div>
+        <div class="stat-block">
+            <span class="stat-block-icon">🌟</span>
+            <div class="stat-block-value">4.9</div>
+            <div class="stat-block-label">User Rating</div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="section-header">
+        <h2>Why Choose <span class="text-forest">TrekPlan?</span></h2>
+        <p>Everything you need to organize and experience the perfect trek.</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon green"><i class="bi bi-compass-fill"></i></div>
+            <h3>Explore Trek Routes</h3>
+            <p>Browse through curated trekking programs across India. Filter by difficulty, location, and availability to find your perfect adventure.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon blue"><i class="bi bi-calendar-check-fill"></i></div>
+            <h3>Instant Slot Booking</h3>
+            <p>Lock your slots in one click. Real-time availability tracking ensures you never miss out on a trek. Simple, fast, reliable.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon amber"><i class="bi bi-shield-check"></i></div>
+            <h3>Managed by Experts</h3>
+            <p>Admin-approved guides manage each trek. Staff update slots, statuses, and participant rosters — everything runs smoothly.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-box">
+        <h2>Ready for Your Next <span class="text-forest">Adventure?</span></h2>
+        <p>Join hundreds of trekkers who trust TrekPlan for their mountain journeys. Create your free account today.</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn-hero-primary">
+                <i class="bi bi-person-plus-fill"></i> Create Free Account
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn-hero-secondary">
+                <i class="bi bi-box-arrow-in-right"></i> Already a Member? Login
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <p>© 2026 <a href="{{ url_for('home') }}">TrekPlan</a> — Built for the mountains. All rights reserved.</p>
+</footer>
+{% endblock %}
