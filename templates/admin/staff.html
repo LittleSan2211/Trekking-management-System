@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Manage Staff - Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-brand-icon">🌲</span>
+            <h4>AdminPanel</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-link">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin.manage_treks') }}" class="nav-link">
+            <i class="bi bi-compass-fill"></i> Manage Treks
+        </a>
+        <a href="{{ url_for('admin.manage_staff') }}" class="nav-link active">
+            <i class="bi bi-people-fill"></i> Manage Staff
+        </a>
+        <a href="{{ url_for('admin.manage_users') }}" class="nav-link">
+            <i class="bi bi-person-lines-fill"></i> Manage Users
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Trek Guides & <span class="text-forest">Staff Profiles</span></h2>
+            <form action="{{ url_for('admin.manage_staff') }}" method="GET" class="search-bar">
+                <input type="text" name="search" class="form-control" placeholder="Search staff..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-adventure">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <div class="table-title">
+                <i class="bi bi-people-fill"></i> Staff Directory
+            </div>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Name</th>
+                        <th>Contact Email</th>
+                        <th>Approval Status</th>
+                        <th>System Access Status</th>
+                        <th>Action Buttons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staff_members %}
+                    <tr>
+                        <td>#{{ staff.id }}</td>
+                        <td><strong>{{ staff.name }}</strong></td>
+                        <td>{{ staff.auth_user.email }}<br><small class="text-muted"><i class="bi bi-telephone-fill me-1"></i>{{ staff.contact }}</small></td>
+                        <td>
+                            <span class="badge {% if staff.approval_status == 'Approved' %}bg-success{% else %}bg-warning{% endif %}">
+                                {{ staff.approval_status }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge {% if staff.auth_user.status == 'Active' %}bg-info{% else %}bg-danger{% endif %}">
+                                {{ staff.auth_user.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                {% if staff.approval_status == 'Pending' %}
+                                    <a href="{{ url_for('admin.staff_action', profile_id=staff.id, action='approve') }}" class="btn btn-sm btn-success">
+                                        <i class="bi bi-check-lg"></i> Approve
+                                    </a>
+                                {% endif %}
+                                
+                                {% if staff.auth_user.status == 'Active' %}
+                                    <a href="{{ url_for('admin.staff_action', profile_id=staff.id, action='blacklist') }}" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-slash-circle"></i> Blacklist
+                                    </a>
+                                {% else %}
+                                    <a href="{{ url_for('admin.staff_action', profile_id=staff.id, action='activate') }}" class="btn btn-sm btn-secondary">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Activate
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No staff records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

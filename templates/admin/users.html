@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users - Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-brand-icon">🌲</span>
+            <h4>AdminPanel</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-link">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin.manage_treks') }}" class="nav-link">
+            <i class="bi bi-compass-fill"></i> Manage Treks
+        </a>
+        <a href="{{ url_for('admin.manage_staff') }}" class="nav-link">
+            <i class="bi bi-people-fill"></i> Manage Staff
+        </a>
+        <a href="{{ url_for('admin.manage_users') }}" class="nav-link active">
+            <i class="bi bi-person-lines-fill"></i> Manage Users
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Registered <span class="text-forest">Trekkers (Users)</span></h2>
+            <form action="{{ url_for('admin.manage_users') }}" method="GET" class="search-bar">
+                <input type="text" name="search" class="form-control" placeholder="Search users..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-adventure">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <div class="table-title">
+                <i class="bi bi-person-lines-fill"></i> User Directory
+            </div>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Profile Info</th>
+                        <th>Account Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trekker in users %}
+                    <tr>
+                        <td>#{{ trekker.id }}</td>
+                        <td><strong>{{ trekker.name }}</strong></td>
+                        <td>
+                            <i class="bi bi-envelope-fill me-1"></i>{{ trekker.auth_user.email }}<br>
+                            <small class="text-muted">Age: {{ trekker.age }} | Gender: {{ trekker.gender }} | <i class="bi bi-telephone-fill me-1"></i>{{ trekker.contact }}</small>
+                        </td>
+                        <td>
+                            <span class="badge {% if trekker.auth_user.status == 'Active' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ trekker.auth_user.status }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if trekker.auth_user.status == 'Active' %}
+                                <a href="{{ url_for('admin.user_action', profile_id=trekker.id, action='blacklist') }}" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-slash-circle me-1"></i>Blacklist
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('admin.user_action', profile_id=trekker.id, action='activate') }}" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-check-circle me-1"></i>Activate Account
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No trekker profiles available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - TrekPlan{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-brand-icon">🌲</span>
+            <h4>AdminPanel</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-link active">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin.manage_treks') }}" class="nav-link">
+            <i class="bi bi-compass-fill"></i> Manage Treks
+        </a>
+        <a href="{{ url_for('admin.manage_staff') }}" class="nav-link">
+            <i class="bi bi-people-fill"></i> Manage Staff
+        </a>
+        <a href="{{ url_for('admin.manage_users') }}" class="nav-link">
+            <i class="bi bi-person-lines-fill"></i> Manage Users
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <!-- Main Dashboard Body -->
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="fw-bold">Dashboard <span class="text-forest">Overview</span></h2>
+        </div>
+        
+        <!-- Stats Cards Grid -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card stat-green">
+                    <span class="stat-icon"><i class="bi bi-signpost-split-fill"></i></span>
+                    <div class="stat-label">Total Treks</div>
+                    <div class="stat-value">{{ total_treks }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card stat-blue">
+                    <span class="stat-icon"><i class="bi bi-person-fill"></i></span>
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-value">{{ total_users }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card stat-amber">
+                    <span class="stat-icon"><i class="bi bi-person-badge-fill"></i></span>
+                    <div class="stat-label">Total Staff</div>
+                    <div class="stat-value">{{ total_staff }}</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card stat-red">
+                    <span class="stat-icon"><i class="bi bi-bookmark-check-fill"></i></span>
+                    <div class="stat-label">Total Bookings</div>
+                    <div class="stat-value">{{ total_bookings }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Bookings Table -->
+        <div class="table-container">
+            <div class="table-title">
+                <i class="bi bi-clock-history"></i> Recent Booking Records
+            </div>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Trek Name</th>
+                        <th>User ID</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td><strong>#{{ booking.id }}</strong></td>
+                        <td><strong>{{ booking.trek.name }}</strong></td>
+                        <td>User #{{ booking.user_id }}</td>
+                        <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                        <td>
+                            <span class="badge {% if booking.status=='Booked' %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ booking.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No recent bookings found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block title %}Manage Treks - Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-brand-icon">🌲</span>
+            <h4>AdminPanel</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-link">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin.manage_treks') }}" class="nav-link active">
+            <i class="bi bi-compass-fill"></i> Manage Treks
+        </a>
+        <a href="{{ url_for('admin.manage_staff') }}" class="nav-link">
+            <i class="bi bi-people-fill"></i> Manage Staff
+        </a>
+        <a href="{{ url_for('admin.manage_users') }}" class="nav-link">
+            <i class="bi bi-person-lines-fill"></i> Manage Users
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Trek Routes <span class="text-forest">Management</span></h2>
+            <!-- Search Bar -->
+            <form action="{{ url_for('admin.manage_treks') }}" method="GET" class="search-bar">
+                <input type="text" name="search" class="form-control" placeholder="Search by name or ID..." value="{{ search_query }}">
+                <button type="submit" class="btn btn-adventure">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                {% if search_query %}
+                    <a href="{{ url_for('admin.manage_treks') }}" class="btn btn-secondary">Clear</a>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Add Trek Form Block -->
+        <div class="form-card">
+            <div class="form-card-title">
+                <i class="bi bi-plus-circle-fill"></i> Add New Trek Route
+            </div>
+            <form action="{{ url_for('admin.manage_treks') }}" method="POST" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Trek Name</label>
+                    <input type="text" name="name" class="form-control" required placeholder="e.g. Kedarkantha Trek">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" required placeholder="e.g. Uttarakhand">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Difficulty</label>
+                    <select name="difficulty" class="form-select" required>
+                        <option value="Easy">Easy</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Duration (Days)</label>
+                    <input type="number" name="duration" class="form-control" min="1" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Total Slots</label>
+                    <input type="number" name="slots" class="form-control" min="1" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" name="start_date" class="form-control" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">End Date</label>
+                    <input type="date" name="end_date" class="form-control" required>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-adventure px-4 fw-bold">
+                        <i class="bi bi-plus-lg me-1"></i> Create Trek
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Treks Listing Table -->
+        <div class="table-container">
+            <div class="table-title">
+                <i class="bi bi-list-ul"></i> Existing Trek Routes
+            </div>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Trek Details</th>
+                        <th>Duration / Slots</th>
+                        <th>Assigned Staff</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trek in treks %}
+                    <tr>
+                        <td><strong>#{{ trek.id }}</strong></td>
+                        <td>
+                            <span class="d-block fw-bold">{{ trek.name }}</span>
+                            <small class="text-muted"><i class="bi bi-geo-alt-fill me-1"></i>{{ trek.location }} | <i class="bi bi-graph-up me-1"></i>{{ trek.difficulty }}</small>
+                        </td>
+                        <td>
+                            <span class="d-block">{{ trek.duration }} Days</span>
+                            <small style="color: #68d391; font-weight: 600;">{{ trek.available_slots }} / {{ trek.total_slots }} Slots left</small>
+                        </td>
+                        <td>
+                            {% if trek.staff_profile_id %}
+                                <span class="badge bg-success p-2"><i class="bi bi-person-check-fill me-1"></i>{{ trek.assigned_guide.name }}</span>
+                            {% else %}
+                                <!-- No-JS Dropdown Assignment Form -->
+                                <form action="{{ url_for('admin.assign_staff', trek_id=trek.id) }}" method="POST" class="d-flex gap-1">
+                                    <select name="staff_profile_id" class="form-select form-select-sm" required>
+                                        <option value="" disabled selected>Assign Staff...</option>
+                                        {% for staff in staff_list %}
+                                            <option value="{{ staff.id }}">{{ staff.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-adventure">Go</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('admin.delete_trek', trek_id=trek.id) }}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to remove this trek?');">
+                                <i class="bi bi-trash3-fill me-1"></i>Remove
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No treks available matching the search.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

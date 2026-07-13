@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Global Trekking History{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-brand-icon">🌲</span>
+            <h4>AdminPanel</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-link">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a href="{{ url_for('admin.manage_treks') }}" class="nav-link">
+            <i class="bi bi-compass-fill"></i> Manage Treks
+        </a>
+        <a href="{{ url_for('admin.manage_staff') }}" class="nav-link">
+            <i class="bi bi-people-fill"></i> Manage Staff
+        </a>
+        <a href="{{ url_for('admin.manage_users') }}" class="nav-link">
+            <i class="bi bi-person-lines-fill"></i> Manage Users
+        </a>
+        <a href="{{ url_for('admin.global_history') }}" class="nav-link active">
+            <i class="bi bi-clock-history"></i> Global History
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h2 class="fw-bold">Master Booking & <span class="text-forest">Trekking History</span></h2>
+        </div>
+        <div class="table-container">
+            <div class="table-title">
+                <i class="bi bi-journal-bookmark-fill"></i> Complete History Log
+            </div>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User (Trekker)</th>
+                        <th>Trek Details</th>
+                        <th>Booking Date</th>
+                        <th>Current Trek Status</th>
+                        <th>Booking Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>#BK-{{ booking.id }}</td>
+                        <td><strong>{{ booking.trekker.trekker_profile.name }}</strong><br><small class="text-muted">{{ booking.trekker.email }}</small></td>
+                        <td><strong>{{ booking.trek.name }}</strong><br><small class="text-muted"><i class="bi bi-geo-alt-fill me-1"></i>{{ booking.trek.location }}</small></td>
+                        <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                        <td><span class="badge bg-dark">{{ booking.trek.status }}</span></td>
+                        <td><span class="badge bg-success">{{ booking.status }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No master records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
