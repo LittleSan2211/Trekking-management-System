@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}My Booking History{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">{% endblock %}
+
+{% block content %}
+<div class="user-wrapper">
+    <div class="user-sidebar">
+        <div class="sidebar-brand">
+            <span>⛰️</span>
+            <h4>TrekPlan</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('user.edit_profile') }}" class="nav-link">
+            <i class="bi bi-person-circle"></i> My Profile
+        </a>
+        <a href="{{ url_for('user.dashboard') }}" class="nav-link">
+            <i class="bi bi-compass-fill"></i> Available Treks
+        </a>
+        <a href="{{ url_for('user.view_bookings') }}" class="nav-link active">
+            <i class="bi bi-bookmark-check-fill"></i> My Bookings & History
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <div class="user-content">
+        <!-- Section 1: Active/Upcoming Treks -->
+        <div class="section-title">
+            <i class="bi bi-lightning-charge-fill"></i> Current & Upcoming Bookings
+        </div>
+        <div class="booking-section">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Trek Name</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings if booking.trek.status in ['Open', 'Closed', 'Ongoing'] %}
+                    <tr>
+                        <td><strong>{{ booking.trek.name }}</strong><br><small class="text-muted"><i class="bi bi-geo-alt-fill me-1"></i>{{ booking.trek.location }}</small></td>
+                        <td>{{ booking.booking_date.strftime('%d %b %Y') }}</td>
+                        <td><span class="badge bg-info">{{ booking.trek.status }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 2: Historical/Completed Treks -->
+        <div class="section-title" style="margin-top: 12px;">
+            <i class="bi bi-journal-text"></i> Past Trekking History
+        </div>
+        <div class="booking-section">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Trek Name</th>
+                        <th>Completion Date</th>
+                        <th>Trek Status</th>
+                        <th>Booking Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings if booking.trek.status == 'Completed' %}
+                    <tr>
+                        <td><strong>{{ booking.trek.name }}</strong></td>
+                        <td>{{ booking.trek.end_date.strftime('%d %b %Y') }}</td>
+                        <td><span class="badge bg-success">Completed</span></td>
+                        <td><span class="badge bg-secondary">{{ booking.status }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">No completed trekking history yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

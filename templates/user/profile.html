@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - TrekPlan{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="user-wrapper">
+    <!-- Sidebar Navigation -->
+    <div class="user-sidebar">
+        <div class="sidebar-brand">
+            <span>⛰️</span>
+            <h4>TrekPlan</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('user.dashboard') }}" class="nav-link">
+            <i class="bi bi-compass-fill"></i> Available Treks
+        </a>
+        <a href="{{ url_for('user.view_bookings') }}" class="nav-link">
+            <i class="bi bi-bookmark-check-fill"></i> My Bookings & History
+        </a>
+        <a href="{{ url_for('user.edit_profile') }}" class="nav-link active">
+            <i class="bi bi-person-circle"></i> My Profile
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="user-content">
+        <div class="page-header">
+            <h2 class="fw-bold">Manage <span class="text-forest">Account Settings</span></h2>
+        </div>
+
+        <div class="form-card" style="max-width: 650px;">
+            <div class="form-card-title">
+                <i class="bi bi-person-gear"></i> Update Your Personal Profile
+            </div>
+            
+            <form action="{{ url_for('user.edit_profile') }}" method="POST" class="row g-3">
+                <!-- Registered Email (Disabled: Auth lock) -->
+                <div class="col-12">
+                    <label class="form-label" style="color: var(--text-muted);">Registered Email Address (Cannot be changed)</label>
+                    <input type="email" class="form-control" value="{{ trekker.auth_user.email }}" disabled style="opacity: 0.5;">
+                </div>
+
+                <!-- Full Name -->
+                <div class="col-md-12">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ trekker.name }}" required placeholder="Enter full name">
+                </div>
+
+                <!-- Contact Number -->
+                <div class="col-md-12">
+                    <label for="contact" class="form-label">Contact Number</label>
+                    <input type="tel" id="contact" name="contact" class="form-control" value="{{ trekker.contact }}" required placeholder="Enter phone number">
+                </div>
+
+                <!-- Age -->
+                <div class="col-md-6">
+                    <label for="age" class="form-label">Age (Years)</label>
+                    <input type="number" id="age" name="age" class="form-control" value="{{ trekker.age if trekker.age else '' }}" min="10" max="100" placeholder="e.g. 24">
+                </div>
+
+                <!-- Gender Selection -->
+                <div class="col-md-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select id="gender" name="gender" class="form-select">
+                        <option value="" disabled {% if not trekker.gender %}selected{% endif %}>Select Gender</option>
+                        <option value="Male" {% if trekker.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if trekker.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if trekker.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+
+                <!-- Action Button -->
+                <div class="col-12 text-end mt-4">
+                    <button type="submit" class="btn btn-adventure px-4 fw-bold py-2">
+                        <i class="bi bi-check2-circle me-1"></i> Save Profile Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

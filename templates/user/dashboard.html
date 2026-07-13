@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Trekker Dashboard - TrekPlan{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="user-wrapper">
+    <!-- Sidebar Navigation -->
+    <div class="user-sidebar">
+        <div class="sidebar-brand">
+            <span>⛰️</span>
+            <h4>TrekPlan</h4>
+        </div>
+        <hr>
+        <a href="{{ url_for('user.edit_profile') }}" class="nav-link">
+            <i class="bi bi-person-circle"></i> My Profile
+        </a>
+        <a href="{{ url_for('user.dashboard') }}" class="nav-link active">
+            <i class="bi bi-compass-fill"></i> Available Treks
+        </a>
+        <a href="{{ url_for('user.view_bookings') }}" class="nav-link">
+            <i class="bi bi-bookmark-check-fill"></i> My Bookings & History
+        </a>
+        <hr>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link text-danger">
+            <i class="bi bi-box-arrow-left"></i> Logout
+        </a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="user-content">
+        <div class="row align-items-center mb-4">
+            <div class="col-md-8">
+                <h2 class="fw-bold">Explore New Horizons, <span class="text-forest">{{ trekker.name }}!</span></h2>
+                <p class="text-muted">Find upcoming active routes and lock your slots instantly.</p>
+            </div>
+            <!-- Dynamic Profile Management Block -->
+            <div class="col-md-4">
+                <div class="profile-quick-card">
+                    <h6><i class="bi bi-pencil-square me-1"></i> Update Profile Details</h6>
+                    <form action="{{ url_for('user.dashboard') }}" method="POST" class="row g-2">
+                        <input type="hidden" name="action" value="update_profile">
+                        <div class="col-12">
+                            <input type="text" name="name" class="form-control form-control-sm" value="{{ trekker.name }}" placeholder="Full Name" required>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" name="contact" class="form-control form-control-sm" value="{{ trekker.contact }}" placeholder="Contact" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="number" name="age" class="form-control form-control-sm" value="{{ trekker.age if trekker.age else '' }}" placeholder="Age">
+                        </div>
+                        <div class="col-6">
+                            <select name="gender" class="form-select form-select-sm">
+                                <option value="Male" {% if trekker.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if trekker.gender == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Other" {% if trekker.gender == 'Other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-adventure fw-bold mt-2">
+                            <i class="bi bi-check-lg me-1"></i> Save Profile Info
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pure HTML Filters Panel (No JavaScript) -->
+        <div class="filter-bar">
+            <form action="{{ url_for('user.dashboard') }}" method="GET" class="row g-2 align-items-center">
+                <div class="col-md-5">
+                    <input type="text" name="location" class="form-control" placeholder="Search by location (e.g., Uttarakhand)..." value="{{ search_location }}">
+                </div>
+                <div class="col-md-4">
+                    <select name="difficulty" class="form-select">
+                        <option value="">All Difficulty Levels</option>
+                        <option value="Easy" {% if filter_difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                        <option value="Moderate" {% if filter_difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+                        <option value="Hard" {% if filter_difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-adventure w-100 fw-bold">
+                        <i class="bi bi-funnel-fill me-1"></i> Filter
+                    </button>
+                    {% if search_location or filter_difficulty %}
+                        <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary">Reset</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+
+        <!-- Available Treks Loop Display -->
+        <div class="section-title">
+            <i class="bi bi-signpost-split-fill"></i> Open Trekking Programs
+        </div>
+        <div class="row g-4">
+            {% for trek in treks %}
+            <div class="col-md-6 col-lg-4">
+                <div class="trek-card">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge bg-forest p-2">{{ trek.difficulty }}</span>
+                        <span style="color: #68d391; font-weight: 600; font-size: 0.82rem;"><i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>{{ trek.available_slots }} slots left</span>
+                    </div>
+                    <h5 class="trek-name">{{ trek.name }}</h5>
+                    <p class="trek-meta mb-3"><i class="bi bi-geo-alt-fill me-1"></i>{{ trek.location }} | <i class="bi bi-clock me-1"></i>{{ trek.duration }} Days</p>
+                    
+                    <div class="trek-dates">
+                        <small class="d-block"><strong>Starts:</strong> {{ trek.start_date.strftime('%d %b %Y') }}</small>
+                        <small class="d-block"><strong>Ends:</strong> {{ trek.end_date.strftime('%d %b %Y') }}</small>
+                    </div>
+
+                    <form action="{{ url_for('user.book_trek', trek_id=trek.id) }}" method="POST">
+                        <button type="submit" class="btn btn-adventure w-100 fw-bold py-2" 
+                                {% if trek.available_slots <= 0 %}disabled{% endif %}>
+                            {% if trek.available_slots > 0 %}
+                                <i class="bi bi-lightning-charge-fill me-1"></i> Book Slots Now
+                            {% else %}
+                                <i class="bi bi-x-circle me-1"></i> Fully Booked
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">No available treks matching your active preferences right now.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
