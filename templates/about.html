@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}About Us – TrekPlan{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="trek-navbar">
+    <div class="nav-inner">
+        <a href="{{ url_for('home') }}" class="nav-brand">
+            <span class="nav-brand-icon">🏔️</span>
+            <span>TrekPlan</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}"><i class="bi bi-house-fill"></i> Home</a></li>
+            <li><a href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+            <li><a href="{{ url_for('auth.register') }}" class="nav-btn"><i class="bi bi-person-plus-fill"></i> Register</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- About Hero -->
+<section class="about-hero">
+    <div class="hero-badge">
+        <i class="bi bi-heart-fill"></i> Our Story
+    </div>
+    <h1>About <span class="gradient-text">TrekPlan</span></h1>
+    <p>
+        We're building the most seamless trekking management experience in India. 
+        From booking your first trek to managing a full expedition roster — TrekPlan handles it all.
+    </p>
+</section>
+
+<!-- About Content -->
+<section class="about-content">
+    <div class="about-grid">
+        <div class="about-card">
+            <span class="about-card-icon">🎯</span>
+            <h3>Our Mission</h3>
+            <p>To make trekking accessible, organized, and memorable for everyone. We connect trekkers with expert guides and provide tools to manage every aspect of the journey.</p>
+        </div>
+        <div class="about-card">
+            <span class="about-card-icon">🔭</span>
+            <h3>Our Vision</h3>
+            <p>To become India's most trusted platform for outdoor adventure management — empowering trekkers, staff, and administrators with smart tools and seamless workflows.</p>
+        </div>
+        <div class="about-card">
+            <span class="about-card-icon">👥</span>
+            <h3>For Trekkers</h3>
+            <p>Browse available treks, filter by difficulty and location, book your slots instantly, and track your booking history — all from one beautiful dashboard.</p>
+        </div>
+        <div class="about-card">
+            <span class="about-card-icon">🧭</span>
+            <h3>For Staff & Guides</h3>
+            <p>Manage your assigned treks, update slots and statuses in real-time, view participant rosters, and keep your profile up to date — everything at your fingertips.</p>
+        </div>
+        <div class="about-card">
+            <span class="about-card-icon">⚙️</span>
+            <h3>For Administrators</h3>
+            <p>Full control over trek creation, staff approval, user management, and booking history. Assign guides to treks and monitor the entire platform from one dashboard.</p>
+        </div>
+        <div class="about-card">
+            <span class="about-card-icon">🛡️</span>
+            <h3>Built with Care</h3>
+            <p>Developed using Flask, SQLAlchemy, and Bootstrap. Clean architecture with role-based access control, profile management, and a premium dark UI experience.</p>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+        <h2>Join the <span class="text-forest">TrekPlan</span> Community</h2>
+        <p>Whether you're a trekker looking for the next summit or a guide ready to lead — we've got a place for you.</p>
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn-hero-primary">
+                <i class="bi bi-person-plus-fill"></i> Get Started Free
+            </a>
+            <a href="{{ url_for('home') }}" class="btn-hero-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <p>© 2026 <a href="{{ url_for('home') }}">TrekPlan</a> — Built for the mountains. All rights reserved.</p>
+</footer>
+{% endblock %}
