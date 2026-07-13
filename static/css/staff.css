@@ -1,0 +1,141 @@
+/* ============================================
+   Staff Portal – Sidebar & Dashboard
+   ============================================ */
+
+/* Layout */
+.staff-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---- Sidebar ---- */
+.staff-sidebar {
+    width: 270px;
+    background: var(--surface-sidebar);
+    color: white;
+    padding: 28px 20px;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+    border-right: 1px solid var(--border-default);
+    overflow-y: auto;
+}
+
+.staff-sidebar .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    margin-bottom: 8px;
+}
+
+.staff-sidebar .sidebar-brand h4 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, var(--color-emerald), #27ae60);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.staff-sidebar hr {
+    border-color: rgba(255, 255, 255, 0.08);
+    margin: 16px 0;
+}
+
+.staff-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.staff-sidebar .nav-link i {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+}
+
+.staff-sidebar .nav-link:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.staff-sidebar .nav-link.active {
+    color: #fff;
+    background: rgba(46, 204, 113, 0.15);
+    font-weight: 600;
+}
+
+.staff-sidebar .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--color-emerald);
+}
+
+.staff-sidebar .nav-link.text-danger {
+    color: rgba(252, 129, 129, 0.7) !important;
+}
+.staff-sidebar .nav-link.text-danger:hover {
+    color: #fc8181 !important;
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* ---- Main Content ---- */
+.staff-content {
+    margin-left: 270px;
+    flex: 1;
+    padding: 32px 36px;
+    background: var(--surface-body);
+    min-height: 100vh;
+    animation: fadeInUp 0.4s ease-out both;
+}
+
+/* Inline Edit Forms */
+.inline-edit-form select,
+.inline-edit-form input {
+    max-width: 120px;
+    padding: 5px 8px;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-body);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+}
+
+.inline-edit-form select:focus,
+.inline-edit-form input:focus {
+    border-color: var(--color-emerald);
+    box-shadow: 0 0 0 2px var(--color-emerald-glow);
+    outline: none;
+}
+
+/* Profile Card */
+.profile-edit-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+}
+
+.profile-edit-card h6 {
+    color: var(--color-emerald);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
