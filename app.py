@@ -175,3 +175,5 @@ def about():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# uv pip install -r requirements.txt
