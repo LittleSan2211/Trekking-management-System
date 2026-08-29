@@ -1,0 +1,213 @@
+/* ============================================
+   User/Trekker Portal – Sidebar & Dashboard
+   ============================================ */
+
+/* Layout */
+.user-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---- Sidebar ---- */
+.user-sidebar {
+    width: 270px;
+    background: var(--surface-sidebar);
+    color: white;
+    padding: 28px 20px;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+    border-right: 1px solid var(--border-default);
+    overflow-y: auto;
+}
+
+.user-sidebar .sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    margin-bottom: 8px;
+}
+
+.user-sidebar .sidebar-brand h4 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, var(--color-emerald), #27ae60);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.user-sidebar hr {
+    border-color: rgba(255, 255, 255, 0.08);
+    margin: 16px 0;
+}
+
+.user-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.user-sidebar .nav-link i {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+}
+
+.user-sidebar .nav-link:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.user-sidebar .nav-link.active {
+    color: #fff;
+    background: rgba(46, 204, 113, 0.15);
+    font-weight: 600;
+}
+
+.user-sidebar .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--color-emerald);
+}
+
+.user-sidebar .nav-link.text-danger {
+    color: rgba(252, 129, 129, 0.7) !important;
+}
+.user-sidebar .nav-link.text-danger:hover {
+    color: #fc8181 !important;
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* ---- Main Content ---- */
+.user-content {
+    margin-left: 270px;
+    flex: 1;
+    padding: 32px 36px;
+    background: var(--surface-body);
+    min-height: 100vh;
+    animation: fadeInUp 0.4s ease-out both;
+}
+
+/* ---- Trek Cards ---- */
+.trek-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.trek-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-emerald), var(--color-amber));
+    opacity: 0;
+    transition: var(--transition-smooth);
+}
+
+.trek-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(46, 204, 113, 0.15);
+}
+
+.trek-card:hover::before {
+    opacity: 1;
+}
+
+.trek-card .trek-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.trek-card .trek-meta {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.trek-card .trek-dates {
+    border-top: 1px solid var(--border-default);
+    padding-top: 12px;
+    margin-top: 12px;
+    margin-bottom: 16px;
+}
+
+.trek-card .trek-dates small {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Filter Bar */
+.filter-bar {
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 28px;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title i {
+    color: var(--color-emerald);
+}
+
+/* Profile Edit Card in dashboard */
+.profile-quick-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+}
+
+.profile-quick-card h6 {
+    color: var(--color-emerald);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+}
+
+/* Booking tables */
+.booking-section {
+    background: var(--surface-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 24px;
+}

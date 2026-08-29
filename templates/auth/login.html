@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Login - TrekPlan{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <span class="auth-brand-icon">🌲</span>
+            <h2>TrekPlan</h2>
+            <p>Adventure is calling. Login to start.</p>
+        </div>
+        
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            <!-- Role Selection Dropdown -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Select Your Role</label>
+                <select class="form-select" id="role" name="role" required>
+                    <option value="" selected disabled>Choose your role...</option>
+                    <option value="trekker">User (Trekker)</option>
+                    <option value="staff">Trek Staff</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <!-- Email Field -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-adventure py-2 fw-bold">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                </button>
+            </div>
+        </form>
+
+        <hr class="auth-divider">
+
+        <div class="auth-footer">
+            <p>Don't have an account? 
+                <a href="{{ url_for('auth.register') }}">Register Here</a>
+            </p>
+            <p>
+                <a href="{{ url_for('home') }}"><i class="bi bi-house-door-fill"></i> Back to Home</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
